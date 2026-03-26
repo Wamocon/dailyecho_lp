@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-dm-sans);
+  --font-mono: var(--font-ibm-plex-mono);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-sidebar: var(--sidebar);
+
+  --radius: 0.5rem;
+}
+
+@layer base {
+  :root {
+    --background: #f0f8ff;
+    --foreground: #374151;
+    --card: #ffffff;
+    --primary: #22c55e;
+    --primary-foreground: #ffffff;
+    --secondary: #e0f2fe;
+    --accent: #d1fae5;
+    --muted: #f3f4f6;
+    --muted-foreground: #6b7280;
+    --border: #e5e7eb;
+    --destructive: #ef4444;
+    --sidebar: #e0f2fe;
+  }
+
+  .dark {
+    --background: #0f172a;
+    --foreground: #d1d5db;
+    --card: #1e293b;
+    --primary: #34d399;
+    --secondary: #2d3748;
+    --muted-foreground: #6b7280;
+    --border: #4b5563;
+    --sidebar: #1e293b;
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+}
