@@ -2,7 +2,7 @@
 
 import { Sunrise, MoonStar, ShieldAlert, Trophy, Wind, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, Variants } from 'framer-motion';
 import { useRef } from 'react';
 
 export default function Home() {
@@ -29,7 +29,7 @@ export default function Home() {
   const eveningY = useTransform(scrollYProgress, [0.35, 0.5, 0.65, 0.8], [100, 0, 0, -100]);
 
   // ---- Variants for Framer Motion Reveal (Bento Grid) ----
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
@@ -37,7 +37,7 @@ export default function Home() {
     }
   };
   
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 40 },
     show: { opacity: 1, y: 0, transition: { type: "spring", bounce: 0.3, duration: 0.8 } }
   };
