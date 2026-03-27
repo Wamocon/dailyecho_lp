@@ -1,13 +1,13 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export function Footer() {
   return (
     <footer className="bg-slate-50 border-t border-slate-200 py-12">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="md:col-span-2">
-          <Link href="/" className="font-sans font-bold text-xl tracking-tight text-slate-900 flex items-center gap-2 mb-4">
-            <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-emerald-400 to-green-600"></div>
-            DailyEcho
+          <Link href="/" className="flex items-center gap-2 mb-4">
+            <Image src="/logo-white.png" alt="DailyEcho Logo" width={140} height={40} className="h-8 w-auto" />
           </Link>
           <p className="text-slate-500 text-sm max-w-sm">
             Deine tägliche Check-in Oase. 100% Privat. Gebaut für radikalen Fokus und mentalen Feierabend.
