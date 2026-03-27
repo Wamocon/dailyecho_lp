@@ -7,7 +7,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="md:col-span-2">
           <Link href="/" className="flex items-center gap-2 mb-4">
-            <Image src="/logo-white.png" alt="DailyEcho Logo" width={140} height={40} className="h-8 w-auto" />
+            <Image src="/logo-white-cropped.png" alt="DailyEcho Logo" width={200} height={56} className="h-10 w-auto mix-blend-multiply opacity-90" />
           </Link>
           <p className="text-slate-500 text-sm max-w-sm">
             Deine tägliche Check-in Oase. 100% Privat. Gebaut für radikalen Fokus und mentalen Feierabend.

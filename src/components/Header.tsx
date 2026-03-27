@@ -6,7 +6,7 @@ export function Header() {
     <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/logo-white.png" alt="DailyEcho Logo" width={140} height={40} className="h-8 w-auto" priority />
+          <Image src="/logo-white-cropped.png" alt="DailyEcho Logo" width={200} height={56} className="h-12 w-auto mix-blend-multiply" priority />
         </Link>
 
         <nav className="hidden md:flex gap-8 text-sm font-medium text-slate-600">
