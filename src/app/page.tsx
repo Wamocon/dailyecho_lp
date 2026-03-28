@@ -2,7 +2,7 @@
 
 import { 
   CloudOff, Beaker, Flag, ArrowRight, CheckCircle2, ChevronDown, Check, Zap, EyeOff, FileDigit, 
-  X, Smartphone, Moon, Database, Download, Flame, LogOut, PenTool, CreditCard, Lock, Sunrise 
+  X, Smartphone, Moon, Database, Download, Flame, LogOut, PenTool, CreditCard, Lock, Sunrise, Target, Award, Star 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
@@ -262,7 +262,73 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ================= GAMIFICATION & LEVEL SYSTEM ================= */}
+      <section className="py-24 bg-slate-900 border-b border-slate-800 text-white relative overflow-hidden" id="level-system">
+        {/* Glow Effects */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none -z-10 translate-x-1/2 -translate-y-1/2"></div>
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16 max-w-2xl mx-auto">
+            <h2 className="text-sm font-semibold text-emerald-400 tracking-wide uppercase mb-3">Motivation pur</h2>
+            <h3 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-balance">Fortschritt, der Spaß macht.</h3>
+            <p className="text-lg text-slate-400">Journaling scheitert oft an der Routine. DailyEcho verbindet Klarheit mit einem motivierenden XP- und Level-System.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Card 1: XP & Levels */}
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-8 rounded-3xl flex flex-col relative overflow-hidden group hover:border-orange-500/50 transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center mb-6">
+                <Target className="w-6 h-6" />
+              </div>
+              <h4 className="text-xl font-bold mb-3">XP- & Level-System</h4>
+              <p className="text-slate-400 mb-6 text-sm leading-relaxed">Für jeden Check-In und eingelösten QuickWin sammelst du XP. Steige von Level 1 bis 10 auf.</p>
+              
+              <div className="mt-auto w-full pt-6 border-t border-slate-700">
+                <div className="flex justify-between text-xs font-semibold mb-2">
+                  <span className="text-slate-300 gap-2 flex items-center">Lvl 4 <span className="text-slate-500">Explorer</span></span>
+                  <span className="text-orange-400">840/1000 XP</span>
+                </div>
+                <div className="w-full h-2 bg-slate-700/50 rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-orange-500 to-amber-400 w-[84%] rounded-full"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2: Achievements */}
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-8 rounded-3xl flex flex-col relative overflow-hidden group hover:border-emerald-500/50 transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-6">
+                <Award className="w-6 h-6" />
+              </div>
+              <h4 className="text-xl font-bold mb-3">10 Sammelbare Erfolge</h4>
+              <p className="text-slate-400 mb-6 text-sm leading-relaxed">Schalte exklusive Achievements frei und dokumentiere deinen Erfolg messbar (z.B. der "7-Tage Streak").</p>
+              
+              <div className="mt-auto w-full pt-6 border-t border-slate-700 flex">
+                 <div className="w-10 h-10 rounded-full bg-slate-800 border-2 border-slate-700 flex items-center justify-center text-sm z-30 shadow-[0_0_15px_rgba(16,185,129,0.2)]">??</div>
+                 <div className="w-10 h-10 rounded-full bg-slate-800 border-2 border-slate-700 flex items-center justify-center text-sm z-20 shadow-[0_0_15px_rgba(249,115,22,0.2)] -ml-3">?</div>
+                 <div className="w-10 h-10 rounded-full bg-slate-800 border-2 border-slate-700 flex items-center justify-center text-sm z-10 opacity-40 grayscale -ml-3">??</div>
+              </div>
+            </div>
+
+            {/* Card 3: Unlockables */}
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 p-8 rounded-3xl flex flex-col relative overflow-hidden group hover:border-blue-500/50 transition-colors">
+              <div className="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center mb-6">
+                <Lock className="w-6 h-6" />
+              </div>
+              <h4 className="text-xl font-bold mb-3">Level Unlockables</h4>
+              <p className="text-slate-400 mb-6 text-sm leading-relaxed">Kleine Belohnungen für Konsistenz. Je höher dein Level, desto mehr Tools schalten sich frei.</p>
+              
+              <div className="mt-auto w-full pt-6 border-t border-slate-700">
+                <div className="flex items-center gap-2 text-xs text-slate-300 bg-slate-700/30 p-2 rounded-lg border border-slate-700 shrink-0 overflow-hidden">
+                  <Star className="w-4 h-4 text-emerald-500 shadow-sm shrink-0" />
+                  <span className="truncate">Schaltet <span className="text-white font-medium">Dark Mode Pro</span> ab Level 5 frei</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ================= METRICS Sektion ================= */}
+
       <section className="bg-slate-900 py-20 text-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center divide-y md:divide-y-0 md:divide-x divide-slate-800">
