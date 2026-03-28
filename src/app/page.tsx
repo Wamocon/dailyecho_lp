@@ -1,245 +1,284 @@
 "use client";
 
-import { Sunrise, MoonStar, ShieldAlert, Trophy, Wind, ArrowRight } from 'lucide-react';
+import { Shield, ShieldAlert, CloudOff, Beaker, Flag, ArrowRight, CheckCircle2, ChevronDown, Check, Zap, EyeOff, FileDigit, Calendar } from 'lucide-react';
 import Image from 'next/image';
-import { motion, useScroll, useTransform, Variants } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 
 export default function Home() {
-  // ---- Refs & Hooks for Cinematic Scroll (Day to Night) ----
-  const storyRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: storyRef,
-    offset: ["start start", "end end"]
-  });
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
-  // Background color maps scroll progress from White (Morning) -> Deep Slate (Night) -> White (Next Day)
-  const storyBg = useTransform(
-    scrollYProgress, 
-    [0, 0.25, 0.4, 0.6, 0.75, 1], 
-    ["#f8fafc", "#f8fafc", "#0f172a", "#0f172a", "#f8fafc", "#f8fafc"]
-  );
-
-  // Animations Morgen-Karte
-  const morningOpacity = useTransform(scrollYProgress, [0, 0.15, 0.3], [1, 1, 0]);
-  const morningY = useTransform(scrollYProgress, [0, 0.15, 0.3], [0, 0, -100]);
-
-  // Animations Abend-Karte
-  const eveningOpacity = useTransform(scrollYProgress, [0.35, 0.5, 0.65, 0.8], [0, 1, 1, 0]);
-  const eveningY = useTransform(scrollYProgress, [0.35, 0.5, 0.65, 0.8], [100, 0, 0, -100]);
-
-  // ---- Variants for Framer Motion Reveal (Bento Grid) ----
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 }
-    }
-  };
-  
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 40 },
-    show: { opacity: 1, y: 0, transition: { type: "spring", bounce: 0.3, duration: 0.8 } }
-  };
+  const faqs = [
+    { q: "Wo werden meine Daten gespeichert?", a: "DailyEcho speichert alle Daten zu 100% lokal in deinem Browser (LocalStorage/IndexedDB). Es gibt keine Cloud, keine Server, keine Datenbanken von uns. Wenn du deinen Browser-Cache löschst, sind die Daten weg – maximale Privatsphäre." },
+    { q: "Kostet die App etwas?", a: "Nein, aktuell ist DailyEcho ein kostenloses Open-Source-Angebot für deinen mentalen Fokus." },
+    { q: "Funktioniert die App auch offline?", a: "Ja. DailyEcho ist als Progressive Web App (PWA) gebaut. Du kannst sie auf deinem Homescreen hinzufügen und sie funktioniert komplett ohne Internetverbindung." },
+    { q: "Gibt es einen Account oder Login?", a: "Nein. Klickst du auf 'Web-App starten', bist du sofort drin. Ohne Registrierung, ohne E-Mail." }
+  ];
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-800 selection:bg-emerald-500/20">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-800 selection:bg-emerald-500/20 pt-24">
       
-      {/* Atmende Background Ambient Glows (Vorschlag 2.2) */}
-      <motion.div 
-        animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] rounded-full bg-emerald-300/40 blur-[120px] pointer-events-none" 
-      />
-      <motion.div 
-        animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.3, 0.1] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="absolute top-[20%] right-[-5%] w-[500px] h-[500px] rounded-full bg-violet-300/30 blur-[120px] pointer-events-none" 
-      />
-
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 px-6 flex flex-col items-center justify-center text-center z-10">
+      {/* 1. HERO SECTION & 2. Doppelfrage */}
+      <section className="relative pt-20 pb-16 px-6 flex flex-col items-center justify-center text-center z-10 max-w-5xl mx-auto">
         
-        <motion.div 
+        {/* Version Badge */}
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 shadow-sm mb-8 transform transition hover:scale-105 hover:shadow-md cursor-default"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold tracking-wide shadow-sm mb-8"
         >
-          <ShieldAlert className="w-4 h-4 text-emerald-600" />
-          <span className="text-xs font-mono text-slate-600 tracking-wide uppercase font-semibold">Zero Data Mining &middot; 100% Local</span>
+          <Zap className="w-4 h-4 text-amber-500" />
+          <span>PWA &middot; Offline verfügbar</span>
         </motion.div>
 
-        {/* H1 - Massive Impact (Vorschlag 2.3: Typografie Blur-Reveal) */}
-        <motion.h1 
-          initial={{ filter: "blur(15px)", opacity: 0, y: 30 }}
-          animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-          className="text-6xl md:text-8xl lg:text-[7rem] font-bold tracking-tighter leading-[1.1] mb-8 font-sans max-w-5xl text-slate-900"
-        >
-          3 Minuten gegen den <br className="hidden md:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-emerald-500 to-green-600 pb-2">
-            digitalen Lärm.
-          </span>
-        </motion.h1>
-
-        <motion.p 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 1 }}
-          className="text-lg md:text-2xl text-slate-500 max-w-2xl font-normal leading-relaxed mb-12"
-        >
-          Keine Feeds. Keine toxischen Streaks. Nur Du. <br className="hidden sm:block"/>
-          Deine tägliche Check-in Oase für radikalen Fokus und echten Feierabend.
-        </motion.p>
-
-        <motion.div 
+        <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
-          className="flex flex-col sm:flex-row gap-6 items-center"
+          transition={{ duration: 0.6 }}
+          className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1] mb-6 text-slate-900"
         >
-          <button className="group relative px-8 py-4 bg-slate-900 text-white font-semibold text-lg rounded-full flex items-center gap-3 overflow-hidden transition-all shadow-xl hover:shadow-2xl hover:bg-slate-800 active:scale-95">
-            <div className="absolute inset-0 bg-gradient-to-r from-emerald-400/20 via-blue-500/20 to-emerald-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[length:200%_auto] animate-gradient" />
-            <span className="relative z-10">Intentions-Loop starten</span>
-            <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
+          Dein Feierabend hat begonnen. <br className="hidden md:block" />
+          <span className="text-slate-400">Wirklich?</span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-xl md:text-2xl text-slate-600 max-w-3xl leading-relaxed mb-10"
+        >
+          Lass den mentalen Ballast im Büro. Der DailyEcho Closure-Loop sichert deine letzten Gedanken in 3 Minuten – lokal und ohne Cloud. Für einen klaren Kopf.
+        </motion.p>
+
+        {/* 3. Dual CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="flex flex-col sm:flex-row gap-4 items-center w-full sm:w-auto"
+        >
+          <button className="w-full sm:w-auto px-8 py-4 bg-slate-900 text-white font-semibold text-lg rounded-full flex items-center justify-center gap-3 transition-all hover:bg-emerald-600 shadow-lg hover:shadow-emerald-500/20 active:scale-95">
+            Web-App starten
+            <ArrowRight className="w-5 h-5" />
           </button>
-          
-          <button className="px-6 py-4 font-semibold text-lg text-slate-500 hover:text-slate-900 transition-colors">
+
+          <button className="w-full sm:w-auto px-6 py-4 font-semibold text-lg text-slate-600 hover:text-slate-900 transition-colors flex items-center justify-center gap-2">
+            <FileDigit className="w-5 h-5 opacity-70" />
             Produkthandbuch lesen
           </button>
         </motion.div>
       </section>
 
-      {/* Cinematic Stop-Scroll: Der Intentions-Loop (Vorschlag 1.1) */}
-      <section ref={storyRef} className="relative h-[400vh]">
-        <motion.div 
-          style={{ backgroundColor: storyBg }} 
-          className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden transition-colors duration-200 border-y border-slate-200/50"
-        >
-          {/* Morgen State */}
-          <motion.div 
-            style={{ opacity: morningOpacity, y: morningY }} 
-            className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center pointer-events-none"
-          >
-            <Sunrise className="w-20 h-20 text-emerald-500 mb-8 drop-shadow-md" />
-            <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 text-slate-900">Der Fokus-Anker.</h2>
-            <p className="text-xl md:text-2xl text-slate-500 max-w-2xl leading-relaxed">
-              Beginne den Tag nicht iterativ. Setze deine Intention, bevor die Welt dazwischenfunkt. Drei simple Pflichtfragen richten deinen inneren Kompass aus.
-            </p>
-          </motion.div>
-
-          {/* Abend State */}
-          <motion.div 
-            style={{ opacity: eveningOpacity, y: eveningY }} 
-            className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center pointer-events-none"
-          >
-            <MoonStar className="w-20 h-20 text-indigo-400 mb-8 drop-shadow-[0_0_20px_rgba(129,140,248,0.5)]" />
-            <h2 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 text-white drop-shadow-lg">Der Closure-Loop.</h2>
-            <p className="text-xl md:text-2xl text-slate-300 max-w-2xl leading-relaxed font-light">
-              Lass den Ballast des Tages los und archiviere den tollsten Moment, um mental wirklich Feierabend zu machen. Der Kreis schließt sich.
-            </p>
-          </motion.div>
-        </motion.div>
+      {/* 4. Vertrauens-Badges (4er Grid) */}
+      <section className="border-y border-slate-200 bg-white">
+        <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 text-center divide-x-0 md:divide-x divide-slate-100">
+            <div className="flex flex-col items-center justify-center gap-2">
+              <CloudOff className="w-6 h-6 text-slate-400 mb-1" />
+              <h4 className="font-semibold text-slate-900">100% Lokal</h4>
+              <p className="text-xs text-slate-500">Zero Cloud Speicherung</p>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-2">
+              <EyeOff className="w-6 h-6 text-slate-400 mb-1" />
+              <h4 className="font-semibold text-slate-900">Kein Tracking</h4>
+              <p className="text-xs text-slate-500">Du bist nicht das Produkt</p>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-2">
+              <Beaker className="w-6 h-6 text-slate-400 mb-1" />
+              <h4 className="font-semibold text-slate-900">Psychologisch fundiert</h4>
+              <p className="text-xs text-slate-500">Bewährte Journaling-Methodik</p>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-2">
+              <Flag className="w-6 h-6 text-slate-400 mb-1" />
+              <h4 className="font-semibold text-slate-900">Offener Code</h4>
+              <p className="text-xs text-slate-500">100% Open Source</p>
+            </div>
+          </div>
+        </div>
       </section>
 
-      {/* Modern Bento Grid (Restliche Features) mit kaskadierender Animation */}
-      <section className="relative max-w-7xl mx-auto px-6 py-32 z-10 bg-[#f8fafc]">
-        <div className="mb-20 text-center">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-slate-900">Ein Werkzeug, kein Spielzeug.</h2>
-          <p className="text-xl text-slate-500">Ohne Ablenkung gebaut. Dafür mit echtem Impact.</p>
+      {/* 5. Z-Layout: Mockup + Features */}
+      <section className="py-24 max-w-7xl mx-auto px-6 overflow-hidden">
+        <div className="mb-20 text-center max-w-3xl mx-auto">
+          <h2 className="text-sm font-semibold text-emerald-600 tracking-wide uppercase mb-3">Der Closure-Loop</h2>
+          <h3 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">Klarer Schnitt nach der Arbeit.</h3>
+          <p className="text-lg text-slate-500 mt-4">Ein simpler Ablauf, der deinen Kopf freimacht, anstatt ihn mit Notifications vollzustopfen.</p>
         </div>
 
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[340px]"
-        >
-          {/* ROW 1: Safe Space (Span 2) + Quick Wins (Span 1) */}
-          
-          {/* Safe Space / Interventionen MIT ART IMAGE */}
-          <motion.div variants={itemVariants} className="group relative md:col-span-2 border border-slate-200 rounded-3xl p-8 overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_40px_-4px_rgba(0,0,0,0.2)] transition-all duration-500 bg-slate-900 flex flex-col justify-end">
-            <div className="absolute inset-0 z-0">
-              <Image 
-                src="/images/art.jpeg" 
-                alt="Safe Space Flow" 
-                fill 
-                className="object-cover opacity-50 group-hover:opacity-70 group-hover:scale-105 transition-all duration-1000 mix-blend-screen"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent"></div>
-            </div>
-            <div className="relative z-10 max-w-xl">
-              <Wind className="w-10 h-10 text-emerald-400 mb-6 drop-shadow-md" />
-              <h3 className="text-3xl font-bold mb-3 text-white drop-shadow-sm">Safe Space für dunkle Tage.</h3>
-              <p className="text-slate-300 text-lg leading-relaxed drop-shadow-sm">
-                Nicht jeder Tag besteht aus Peak-Performance. Mikro-Interventionen wie geführte Atemübungen und kuratierte Lo-Fi-Audio-Loops holen dich sanft ins Hier und Jetzt zurück.
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Quick Wins Logo */}
-          <motion.div variants={itemVariants} className="group relative bg-gradient-to-b from-amber-50 to-white border border-amber-100 rounded-3xl p-8 overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_30px_-4px_rgba(0,0,0,0.1)] hover:border-amber-200 transition-all duration-300 flex flex-col items-center justify-center text-center">
-            <div className="relative w-28 h-28 mb-6 transform group-hover:scale-110 group-hover:-rotate-3 transition-all duration-500">
-              <Image 
-                src="/images/quickwin-logo.png" 
-                alt="Quick Win Logo" 
-                fill 
-                className="object-contain drop-shadow-xl" 
-              />
-            </div>
-            <h3 className="text-xl font-bold mb-2 text-slate-900">Die Quick Wins.</h3>
-            <p className="text-slate-500 text-sm px-4">
-              Setze kleine, smarte Wochenziele und feiere Erfolge, ohne dich zu überlasten.
-            </p>
-          </motion.div>
-
-          {/* ROW 2: Privacy (Span 1) + Gamification (Span 2) */}
-          
-          {/* Privacy */}
-          <motion.div variants={itemVariants} className="group relative bg-white border border-slate-200 rounded-3xl p-8 overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1)] hover:border-emerald-100 transition-all duration-300 flex flex-col justify-center">
-            <div className="absolute bottom-[-10%] right-[-10%] w-40 h-40 bg-slate-50 rounded-full blur-[40px] -z-10 group-hover:bg-slate-100 transition-colors" />
-            <ShieldAlert className="w-10 h-10 text-slate-400 mb-6 group-hover:scale-110 transition-transform" />
-            <h3 className="text-2xl font-bold mb-3 text-slate-900">Dein Tresor.</h3>
-            <p className="text-slate-500 text-lg">
-              Alles geschieht im <span className="font-mono px-1.5 py-0.5 bg-slate-100 rounded text-emerald-600 text-sm border border-slate-200">localStorage</span>.<br/>Kein Account. Zero Tracker.
-            </p>
-          </motion.div>
-
-          {/* Gamification */}
-          <motion.div variants={itemVariants} className="group relative md:col-span-2 bg-white border border-slate-200 rounded-3xl p-8 overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_30px_-4px_rgba(0,0,0,0.1)] hover:border-violet-200 transition-all duration-300 flex flex-col justify-center">
-            <div className="absolute bottom-0 right-0 w-3/4 h-full bg-violet-50/50 blur-[60px] -z-10 group-hover:bg-violet-100/50 transition-colors" />
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 md:gap-0">
-              <div className="max-w-md">
-                <Trophy className="w-10 h-10 text-violet-500 mb-6 group-hover:scale-110 transition-transform" />
-                <h3 className="text-2xl font-bold mb-3 text-slate-900">Wachstum. Ohne Druck.</h3>
-                <p className="text-slate-500 text-lg">
-                  Vergiss manipulative Benachrichtigungen. Du erhältst XP für ehrliche Reflexion und baust sanft Meilensteine auf. Brauchst du Pause? Erlaube einen Streak-Freeze.
-                </p>
+        <div className="flex flex-col lg:flex-row items-center gap-16">
+          {/* Linke Seite: "Mockup" App-Ansicht */}
+          <motion.div 
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="w-full lg:w-1/2 flex justify-center"
+          >
+            <div className="w-full max-w-md bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100 overflow-hidden transform -rotate-1 hover:rotate-0 transition-transform duration-500">
+              <div className="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-amber-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+                <div className="text-xs font-semibold text-slate-400 tracking-wider">DAILYECHO</div>
               </div>
-              <div className="flex flex-row md:flex-col items-end gap-3 font-mono text-sm w-full md:w-auto">
-                <div className="px-5 py-3 border border-violet-200 bg-violet-50 rounded-full text-violet-800 font-semibold shadow-sm w-full text-center">Level 3: Reflektor</div>
-                <div className="px-5 py-3 border border-orange-200 bg-orange-50 rounded-full text-orange-800 font-semibold shadow-sm w-full text-center hover:bg-orange-100 transition-colors cursor-default">Streak: 12 🔥</div>
+              <div className="p-8 space-y-6">
+                <div className="h-6 w-1/3 bg-slate-200 rounded animate-pulse"></div>
+                <div className="h-24 w-full bg-emerald-50 rounded-xl border border-emerald-100 flex items-center justify-center text-emerald-600 font-medium">Was lief heute super?</div>
+                <div className="h-24 w-full bg-slate-50 rounded-xl border border-slate-100 flex items-center shadow-inner text-slate-400 font-medium px-6">
+                  Notiere hier deine Sorgen...
+                  <span className="ml-1 w-0.5 h-5 bg-slate-400 animate-pulse"></span>
+                </div>
+                <div className="mt-8 flex justify-end">
+                  <div className="px-6 py-2.5 bg-slate-900 text-white rounded-full text-sm font-semibold flex items-center gap-2">
+                    Loop schließen <CheckCircle2 className="w-4 h-4" />
+                  </div>
+                </div>
               </div>
             </div>
           </motion.div>
-          
-        </motion.div>
+
+          {/* Rechte Seite: Argumente */}
+          <div className="w-full lg:w-1/2 space-y-8">
+            <motion.div initial={{opacity:0, y:20}} whileInView={{opacity:1, y:0}} viewport={{once:true}} className="flex gap-4">
+              <div className="flex-shrink-0 mt-1">
+                <CheckCircle2 className="w-6 h-6 text-emerald-500" />
+              </div>
+              <div>
+                <h4 className="text-xl font-bold text-slate-900 mb-2">Gegen Endlos-Scrollen</h4>
+                <p className="text-slate-600 leading-relaxed">Social Media belohnt Endlosigkeit. DailyEcho belohnt das Ende. Nur drei Pflichtfragen, dann bist du fertig. Keine Ausnahmen.</p>
+              </div>
+            </motion.div>
+            <motion.div initial={{opacity:0, y:20}} whileInView={{opacity:1, y:0}} viewport={{once:true}} transition={{delay: 0.1}} className="flex gap-4">
+              <div className="flex-shrink-0 mt-1">
+                <CheckCircle2 className="w-6 h-6 text-emerald-500" />
+              </div>
+              <div>
+                <h4 className="text-xl font-bold text-slate-900 mb-2">Zeigarnik-Effekt besiegen</h4>
+                <p className="text-slate-600 leading-relaxed">Unerledigte Dinge blockieren deinen Feierabend. Aktives Externalisieren entlastet deinen Arbeitsspeicher sofort spürbar und nachweislich.</p>
+              </div>
+            </motion.div>
+            <motion.div initial={{opacity:0, y:20}} whileInView={{opacity:1, y:0}} viewport={{once:true}} transition={{delay: 0.2}} className="flex gap-4">
+              <div className="flex-shrink-0 mt-1">
+                <CheckCircle2 className="w-6 h-6 text-emerald-500" />
+              </div>
+              <div>
+                <h4 className="text-xl font-bold text-slate-900 mb-2">Niemand liest mit</h4>
+                <p className="text-slate-600 leading-relaxed">Die psychologische Wirkung entfaltet sich nur, wenn du ehrlich bist. Daher gibt es hier keine Server und keine Datensilos.</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="relative py-32 text-center bg-white mt-12 overflow-hidden border-t border-slate-200 items-center flex flex-col justify-center">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-emerald-400/5 blur-[120px] pointer-events-none" />
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-8 text-slate-900 relative z-10 w-full">Dein Future-Self wartet.</h2>
-        <motion.button 
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="relative z-10 px-10 py-5 bg-emerald-500 text-white font-bold text-xl rounded-2xl shadow-[0_10px_40px_-10px_rgba(16,185,129,0.7)]"
-        >
-          Jetzt ersten Check-in starten
-        </motion.button>
+      {/* 6. Metrics Sektion */}
+      <section className="bg-slate-900 py-24 text-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center divide-y md:divide-y-0 md:divide-x divide-slate-800">
+            <div className="pt-8 md:pt-0">
+              <div className="text-6xl md:text-7xl font-bold text-emerald-400 mb-2">3<span className="text-3xl ml-1 text-slate-500">Min</span></div>
+              <div className="text-lg font-medium text-slate-300">Investment pro Tag</div>
+              <div className="text-sm text-slate-500 mt-2">Dafür echte Klarheit & Fokus.</div>
+            </div>
+            <div className="pt-8 md:pt-0">
+              <div className="text-6xl md:text-7xl font-bold text-emerald-400 mb-2">0<span className="text-3xl ml-1 text-slate-500">MB</span></div>
+              <div className="text-lg font-medium text-slate-300">Daten in der Cloud</div>
+              <div className="text-sm text-slate-500 mt-2">100% deiner Privatsphäre.</div>
+            </div>
+            <div className="pt-8 md:pt-0">
+              <div className="text-6xl md:text-7xl font-bold text-emerald-400 mb-2">&infin;</div>
+              <div className="text-lg font-medium text-slate-300">Weniger Stress</div>
+              <div className="text-sm text-slate-500 mt-2">Mehr Präsenz im Hier und Jetzt.</div>
+            </div>
+          </div>
+        </div>
       </section>
+
+      {/* 7. Roadmap */}
+      <section className="pt-32 pb-20 bg-white" id="roadmap">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">Heute Check-in. <br />Morgen System.</h2>
+            <p className="text-xl text-slate-500">Wir bauen DailyEcho stetig aus – komplett in unserem eigenen Tempo.</p>
+          </div>
+
+          <div className="space-y-6">
+            <motion.div whileHover={{y:-2}} className="p-8 border border-emerald-200 bg-emerald-50/50 rounded-2xl flex flex-col md:flex-row gap-6 justify-between items-start flex-wrap shadow-sm">
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-3 mb-3">
+                  <h4 className="text-xl font-bold text-slate-900">Der Closure-Loop (v1.0)</h4>
+                  <span className="px-3 py-1 bg-emerald-200 text-emerald-900 text-xs font-bold rounded-full">Aktuell</span>
+                </div>
+                <p className="text-slate-600 mb-3">Die Kern-App mit dem täglichen Fragen-Loop, Fokus-Modus und lokaler Datenbank (IndexedDB).</p>
+                <div className="flex flex-wrap gap-2 text-xs font-mono text-emerald-700">
+                  <span className="bg-emerald-100/50 px-2 py-1 rounded">✔ State-Machine</span>
+                  <span className="bg-emerald-100/50 px-2 py-1 rounded">✔ PWA Support</span>
+                </div>
+              </div>
+            </motion.div>
+
+            <div className="p-8 border border-slate-200 bg-white rounded-2xl flex flex-col md:flex-row gap-6 justify-between items-start flex-wrap opacity-70">
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-3 mb-3">
+                  <h4 className="text-xl font-bold text-slate-500">Insights & Historie (v1.1)</h4>
+                  <span className="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-full">Geplant</span>
+                </div>
+                <p className="text-slate-500 mb-3">Eine visualisierte Kalender-Ansicht deiner vergangenen Loops im Apple-Habit-Stil plus lokalem Export (JSON/CSV).</p>
+              </div>
+            </div>
+            
+            <div className="p-8 border border-slate-200 bg-white rounded-2xl flex flex-col md:flex-row gap-6 justify-between items-start flex-wrap opacity-40">
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-3 mb-3">
+                  <h4 className="text-xl font-bold text-slate-400">Mobile Native Wrapper (v2.0)</h4>
+                  <span className="px-3 py-1 bg-slate-100 text-slate-400 text-xs font-bold rounded-full">Später</span>
+                </div>
+                <p className="text-slate-400 mb-3">Echte Integration samt Homescreen-Widgets für iOS und Android.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. FAQ Section */}
+      <section className="py-24 bg-[#f8fafc] border-t border-slate-200">
+        <div className="max-w-3xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 tracking-tight">Häufige Fragen.</h2>
+            <p className="text-slate-500">Radikal transparent beantwortet. Nichts versteckt.</p>
+          </div>
+
+          <div className="space-y-4">
+            {faqs.map((faq, i) => (
+              <div key={i} className="bg-white border border-slate-200 rounded-xl overflow-hidden transition-all duration-300 shadow-sm hover:shadow-md">
+                <button 
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full p-6 text-left flex justify-between items-center bg-white transition-colors"
+                >
+                  <span className="font-semibold text-slate-900 pr-6">{faq.q}</span>
+                  <ChevronDown className={`w-5 h-5 text-slate-400 shrink-0 transition-transform duration-300 ${openFaq === i ? 'rotate-180' : ''}`} />
+                </button>
+                <AnimatePresence>
+                  {openFaq === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="p-6 pt-0 text-slate-600 leading-relaxed">
+                        {faq.a}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }
