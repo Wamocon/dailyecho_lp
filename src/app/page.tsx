@@ -38,10 +38,10 @@ export default function Home() {
         </motion.p>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="flex flex-col sm:flex-row gap-4 items-center w-full sm:w-auto">
-          <button className="w-full sm:w-auto px-8 py-4 bg-slate-900 text-white font-semibold text-lg rounded-full flex items-center justify-center gap-3 transition-all hover:bg-emerald-600 shadow-lg hover:shadow-emerald-500/20 active:scale-95">
+          <a href="https://daily-echo-jade.vercel.app/" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto px-8 py-4 bg-slate-900 text-white font-semibold text-lg rounded-full flex items-center justify-center gap-3 transition-all hover:bg-emerald-600 shadow-lg hover:shadow-emerald-500/20 active:scale-95">
             Check-In starten
             <ArrowRight className="w-5 h-5" />
-          </button>
+          </a>
           <button className="w-full sm:w-auto px-6 py-4 font-semibold text-lg text-slate-600 hover:text-slate-900 transition-colors flex items-center justify-center gap-2">
             <FileDigit className="w-5 h-5 opacity-70" />
             Methodik lesen
@@ -389,7 +389,7 @@ export default function Home() {
                 <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0"/> QuickWins am Morgen, Closure am Abend</li>
                 <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0"/> Konsequent gebaut für echten Fokus</li>
               </ul>
-              <button className="w-full py-3 bg-emerald-500 text-white rounded-xl font-semibold hover:bg-emerald-400 transition-colors">Ohne Login starten</button>
+              <a href="https://daily-echo-jade.vercel.app/" target="_blank" rel="noopener noreferrer" className="w-full py-3 bg-emerald-500 text-white rounded-xl font-semibold hover:bg-emerald-400 transition-colors inline-block text-center">Ohne Login starten</a>
             </div>
           </div>
         </div>
@@ -430,9 +430,9 @@ export default function Home() {
         <div className="max-w-3xl mx-auto relative z-10">
           <h2 className="text-sm font-bold text-emerald-400 tracking-widest uppercase mb-4">Bereit für den nächsten Schritt?</h2>
           <h3 className="text-4xl md:text-6xl font-bold text-white mb-8 tracking-tight">Sichere dir echte QuickWins. <br />Jeden Tag.</h3>
-          <button className="px-10 py-5 bg-emerald-500 text-white font-bold text-lg rounded-full shadow-2xl hover:scale-105 hover:bg-emerald-400 transition-all flex items-center justify-center gap-3 mx-auto">
+          <a href="https://daily-echo-jade.vercel.app/" target="_blank" rel="noopener noreferrer" className="px-10 py-5 bg-emerald-500 text-white font-bold text-lg rounded-full shadow-2xl hover:scale-105 hover:bg-emerald-400 transition-all flex items-center justify-center gap-3 mx-auto">
             Jetzt ersten Loop durchführen <ArrowRight className="w-5 h-5" />
-          </button>
+          </a>
           <p className="text-slate-400 mt-6 text-sm">Kein Login. Keine Cloud. Kostenlos nutzbar.</p>
         </div>
       </section>
